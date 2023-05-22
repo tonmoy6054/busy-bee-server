@@ -1,8 +1,9 @@
 const express = require('express');
 const cors = require('cors');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 5000;
-const { MongoClient, ServerApiVersion } = require('mongodb');
+
 require('dotenv').config();
 
 // middleware
@@ -28,9 +29,11 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
-const dataCollection = client.db('BusyBeeToys').collection('data');
-app.get('/data', async(req, res)=>{
-  const cursor = dataCollection.find();
+const productCollection = client.db('busyBee').collection('products');
+
+
+app.get('/products', async(req, res)=>{
+  const cursor = productCollection.find();
   const result = await cursor.toArray();
   res.send(result);
 } )
